@@ -1,12 +1,12 @@
 package com.ponto.repository;
 
-import com.ponto.model.Ponto;
 import org.springframework.data.jpa.repository.JpaRepository;
+import com.ponto.model.Ponto;
 
 import java.util.Optional;
 
-public interface pontorepository extends JpaRepository<Ponto, Long> {
+public interface PontoRepository extends JpaRepository<Ponto, Long> {
 
     Optional<Ponto> findFirstByOrderByDataHoraDesc();
-
 }
+

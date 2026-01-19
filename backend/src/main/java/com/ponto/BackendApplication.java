@@ -1,4 +1,4 @@
-package com.ponto.backend;
+package com.ponto;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
