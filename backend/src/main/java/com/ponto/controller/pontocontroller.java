@@ -3,7 +3,10 @@ package com.ponto.controller;
 import org.springframework.web.bind.annotation.*;
 import com.ponto.model.Ponto;
 import com.ponto.service.PontoService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/pontos")
 public class PontoController {

@@ -5,6 +5,7 @@ export default function Home() {
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
   const [webcamActive, setWebcamActive] = useState(false);
+  const [usarFoto, setUsarFoto] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -37,6 +38,34 @@ export default function Home() {
       });
   };
 
+  // 🔹 FUNÇÃO QUE BATE O PONTO (COM OU SEM FOTO)
+  const registrarPonto = async () => {
+  try {
+    const response = await fetch(
+      "http://localhost:8080/pontos?fotoPath=",
+      {
+        method: "POST"
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Erro ao registrar ponto");
+    }
+    
+    const data = await response.json();
+
+      alert(
+        `Ponto ${data.valido ? "REGISTRADO" : "DESCONSIDERADO"}\n` +
+        `Data/Hora: ${data.dataHora}`
+      );
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao registrar ponto");
+    }
+  };
+
+
+
   return (
     <main className="main">
       <h1>Bater Ponto</h1>
@@ -60,15 +89,31 @@ export default function Home() {
           </>
         )}
 
-        <video id="webcam" autoPlay style={{ display: webcamActive ? "block" : "none" }} />
+        <video
+          id="webcam"
+          autoPlay
+          style={{ display: webcamActive ? "block" : "none" }}
+        />
 
         <button onClick={activateWebcam}>Ativar Permissão</button>
 
         <div className="toggle">
-          <input type="checkbox" defaultChecked />
+          <input
+            type="checkbox"
+            checked={usarFoto}
+            onChange={(e) => setUsarFoto(e.target.checked)}
+          />
           <label>Tirar Foto para Bater Ponto</label>
         </div>
       </div>
+
+      {/* 🔹 BOTÃO PRINCIPAL */}
+      <button
+        className="register-button"
+        onClick={registrarPonto}
+      >
+        Registrar ponto
+      </button>
     </main>
   );
 }
