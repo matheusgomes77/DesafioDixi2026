@@ -1,5 +1,4 @@
-.main {
-  flex: 1;
+.home {
   padding: 40px;
 }
 
@@ -10,7 +9,55 @@ h1 {
 
 .subtitle {
   color: #777;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
+}
+
+/* CARD CENTRAL */
+.card {
+  display: flex;
+  gap: 40px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  max-width: 900px;
+}
+
+/* BLOCO CÂMERA */
+.camera-box {
+  flex: 1;
+}
+
+.camera-text {
+  margin-bottom: 15px;
+  color: #444;
+}
+
+.camera-frame {
+  width: 320px;
+  height: 320px;
+  border-radius: 12px;
+  background: #eaeaea;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Simula a moldura branca */
+.face-placeholder {
+  width: 220px;
+  height: 260px;
+  border: 4px solid #fff;
+  border-radius: 16px;
+}
+
+/* BLOCO DIREITO */
+.info-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .clock {
@@ -22,57 +69,154 @@ h1 {
 .date {
   font-size: 18px;
   color: #2a5db0;
+  margin-bottom: 15px;
+}
+
+.info-text {
+  color: #555;
   margin-bottom: 20px;
-}
-
-.webcam-container {
-  border: 1px solid #ddd;
-  padding: 20px;
-  border-radius: 8px;
-  background-color: white;
-  width: 400px;
-}
-
-.webcam-container img {
-  width: 100px;
-  opacity: 0.3;
-  margin-bottom: 20px;
-}
-
-.webcam-container button {
-  background-color: #2a5db0;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 10px;
 }
 
 .toggle {
-  margin-top: 20px;
   display: flex;
   align-items: center;
+  gap: 8px;
+  margin-bottom: 30px;
 }
 
-.error-msg {
-  color: #555;
-  font-size: 14px;
-}
-
-
-.register-button {
-  margin-top: 30px;
+/* BOTÃO */
+.register-btn {
   background-color: #2a5db0;
-  color: white;
+  color: #fff;
   border: none;
-  padding: 15px 30px;
+  padding: 14px;
   border-radius: 8px;
+  font-size: 16px;
   cursor: pointer;
-  font-size: 18px;
-  font-weight: bold;
+  width: 220px;
 }
 
-.register-button:hover {
+.register-btn:hover {
   background-color: #1f4a8a;
 }
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+/* 🔹 FUNDO ESCURO (overlay) */
+.preview-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+/* 🔹 CARD DO MODAL */
+.preview-modal {
+  background: #ffffff;
+  border-radius: 16px;
+  width: 720px;
+  max-width: 90%;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  display: flex;
+  gap: 24px;
+  position: relative;
+}
+
+/* 🔹 BOTÃO FECHAR (X) */
+.preview-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  border: none;
+  background: transparent;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* 🔹 FOTO */
+.preview-photo {
+  width: 260px;
+  height: 260px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #eee;
+}
+
+/* 🔹 CONTEÚDO À DIREITA */
+.preview-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.preview-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2a5db0;
+  margin-bottom: 16px;
+}
+
+.preview-day {
+  font-size: 14px;
+  color: #2a5db0;
+  font-weight: 600;
+}
+
+.preview-time {
+  font-size: 48px;
+  font-weight: bold;
+  color: #2a5db0;
+  line-height: 1;
+}
+
+.preview-date {
+  font-size: 14px;
+  color: #2a5db0;
+  margin-bottom: 16px;
+}
+
+.preview-text {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 24px;
+}
+
+/* 🔹 BOTÕES */
+.preview-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.preview-btn-secondary {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #2a5db0;
+  background: #fff;
+  color: #2a5db0;
+  cursor: pointer;
+}
+
+.preview-btn-primary {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  background: #2a5db0;
+  color: #fff;
+  cursor: pointer;
+}
+

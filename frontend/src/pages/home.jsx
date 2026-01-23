@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./Home.css";
 
 export default function Home() {
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
-  const [webcamActive, setWebcamActive] = useState(false);
-  const [usarFoto, setUsarFoto] = useState(true);
+  const [usarFoto, setUsarFoto] = useState(false);
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -25,95 +26,94 @@ export default function Home() {
     return () => clearInterval(interval);
   }, []);
 
-  const activateWebcam = () => {
-    navigator.mediaDevices
-      .getUserMedia({ video: true })
-      .then((stream) => {
-        const video = document.getElementById("webcam");
-        video.srcObject = stream;
-        setWebcamActive(true);
-      })
-      .catch(() => {
-        alert("Não foi possível acessar a webcam.");
-      });
-  };
-
-  // 🔹 FUNÇÃO QUE BATE O PONTO (COM OU SEM FOTO)
-  const registrarPonto = async () => {
-  try {
-    const response = await fetch(
-      "http://localhost:8080/pontos?fotoPath=",
-      {
-        method: "POST"
+  // 🔹 LIGA / DESLIGA A CÂMERA
+  useEffect(() => {
+    if (usarFoto) {
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then((stream) => {
+          streamRef.current = stream;
+          if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+          }
+        })
+        .catch(() => {
+          alert("Não foi possível acessar a câmera");
+          setUsarFoto(false);
+        });
+    } else {
+      // Desliga a câmera
+      if (streamRef.current) {
+        streamRef.current.getTracks().forEach((track) => track.stop());
+        streamRef.current = null;
       }
-    );
-
-    if (!response.ok) {
-      throw new Error("Erro ao registrar ponto");
     }
-    
-    const data = await response.json();
+  }, [usarFoto]);
+
+  const registrarPonto = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:8080/pontos?fotoPath=",
+        { method: "POST" }
+      );
+
+      const data = await response.json();
 
       alert(
         `Ponto ${data.valido ? "REGISTRADO" : "DESCONSIDERADO"}\n` +
         `Data/Hora: ${data.dataHora}`
       );
-    } catch (error) {
-      console.error(error);
+    } catch {
       alert("Erro ao registrar ponto");
     }
   };
 
-
-
   return (
-    <main className="main">
+    <main className="home">
       <h1>Bater Ponto</h1>
       <p className="subtitle">Registre o ponto no sistema.</p>
 
-      <div className="clock">{time}</div>
-      <div className="date">{date}</div>
+      <div className="card">
+        {/* CAMERA */}
+        <div className="camera-box">
+          <p className="camera-text">
+            Centralize o rosto na moldura para tirar a foto.
+          </p>
 
-      <div className="webcam-container">
-        {!webcamActive && (
-          <>
-            <img
-              src="https://img.icons8.com/ios-filled/100/cccccc/no-video.png"
-              alt="webcam off"
+          <div className="camera-frame">
+            {usarFoto ? (
+              <video ref={videoRef} autoPlay playsInline />
+            ) : (
+              <div className="photo-disabled">
+                Foto desabilitada
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* INFO */}
+        <div className="info-panel">
+          <div className="clock">{time}</div>
+          <div className="date">{date}</div>
+
+          <p className="info-text">
+            A data e hora serão registradas no sistema ao realizar a marcação.
+          </p>
+
+          <div className="toggle">
+            <input
+              type="checkbox"
+              checked={usarFoto}
+              onChange={(e) => setUsarFoto(e.target.checked)}
             />
-            <p className="error-msg">
-              Não foi possível acessar a webcam!
-              <br />
-              Altere as permissões do navegador.
-            </p>
-          </>
-        )}
+            <label>Tirar Foto para Bater Ponto</label>
+          </div>
 
-        <video
-          id="webcam"
-          autoPlay
-          style={{ display: webcamActive ? "block" : "none" }}
-        />
-
-        <button onClick={activateWebcam}>Ativar Permissão</button>
-
-        <div className="toggle">
-          <input
-            type="checkbox"
-            checked={usarFoto}
-            onChange={(e) => setUsarFoto(e.target.checked)}
-          />
-          <label>Tirar Foto para Bater Ponto</label>
+          <button className="register-btn" onClick={registrarPonto}>
+            Registrar Ponto
+          </button>
         </div>
       </div>
-
-      {/* 🔹 BOTÃO PRINCIPAL */}
-      <button
-        className="register-button"
-        onClick={registrarPonto}
-      >
-        Registrar ponto
-      </button>
     </main>
   );
 }

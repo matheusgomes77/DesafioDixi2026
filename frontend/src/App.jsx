@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
-import Home from "./pages/Home";
-import Historico from "./pages/Historico";
+import Home from "./pages/home";
+import Historico from "./pages/historico";
 import "./App.css";
 
 function App() {
