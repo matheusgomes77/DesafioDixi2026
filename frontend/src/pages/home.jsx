@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import "./Home.css";
+import Modal from "../components/Modal/Modal";
 
 export default function Home() {
   const [time, setTime] = useState("");
@@ -7,7 +8,26 @@ export default function Home() {
   const [usarFoto, setUsarFoto] = useState(false);
   const videoRef = useRef(null);
   const streamRef = useRef(null);
+  const [showModal, setShowModal] = useState(false);
+  const [fotoCapturada, setFotoCapturada] = useState(null);
+  const canvasRef = useRef(null);
 
+// 🔹 FUNÇÃO PARA CAPTURAR FOTO
+  const capturarFoto = () => {
+  if (!videoRef.current) return;
+
+  const video = videoRef.current;
+  const canvas = canvasRef.current;
+
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+  const ctx = canvas.getContext("2d");
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  const imageBase64 = canvas.toDataURL("image/png");
+  setFotoCapturada(imageBase64);
+};
   useEffect(() => {
     const interval = setInterval(() => {
       const now = new Date();
@@ -24,6 +44,7 @@ export default function Home() {
     }, 1000);
 
     return () => clearInterval(interval);
+
   }, []);
 
   // 🔹 LIGA / DESLIGA A CÂMERA
@@ -70,6 +91,12 @@ export default function Home() {
 
   return (
     <main className="home">
+      <Modal
+      isOpen={showModal}
+      onClose={() => setShowModal(false)}
+      videoRef={usarFoto ? videoRef : null}
+      registrarPonto={registrarPonto}
+    />
       <h1>Bater Ponto</h1>
       <p className="subtitle">Registre o ponto no sistema.</p>
 
@@ -91,6 +118,9 @@ export default function Home() {
           </div>
         </div>
 
+        {/* 🔹 CANVAS INVISÍVEL (OBRIGATÓRIO PARA CAPTURAR A FOTO) */}
+          <canvas ref={canvasRef} style={{ display: "none" }} />  
+
         {/* INFO */}
         <div className="info-panel">
           <div className="clock">{time}</div>
@@ -109,11 +139,27 @@ export default function Home() {
             <label>Tirar Foto para Bater Ponto</label>
           </div>
 
-          <button className="register-btn" onClick={registrarPonto}>
-            Registrar Ponto
-          </button>
+      <button
+           className="register-btn"
+          onClick={() => {
+        if (usarFoto) {
+          capturarFoto();
+    }
+        setShowModal(true);
+  }}
+      >
+        Registrar Ponto
+      </button>
+
         </div>
       </div>
+      <Modal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        foto={fotoCapturada}
+        registrarPonto={registrarPonto}
+      />
+
     </main>
   );
 }
