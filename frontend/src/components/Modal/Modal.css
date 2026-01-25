@@ -1,115 +1,207 @@
+/* Container principal do overlay */
 .modal-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.6);
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   z-index: 9999;
+  font-family: 'Inter', sans-serif;
 }
 
+/* Caixa do Modal */
 .modal-box {
-  background: #fff;
-  padding: 20px 30px;
-  border-radius: 12px;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+  background: #ffffff;
+  width: 680px;
+  border-radius: 20px;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+/* Botão Fechar (X) no canto superior */
+.modal-close-x {
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  background: transparent;
+  border: 1.5px solid #2a5db0; /* Azul do ícone */
+  color: #2a5db0;
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+/* Título */
+.modal-title {
+  color: #2a5db0;
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 30px;
+}
+
+/* Layout de duas colunas */
+.modal-body {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+/* Coluna da Foto */
+.modal-photo-section {
+  flex: 1;
+}
+
+.modal-img-preview {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 25px; /* Bordas bem arredondadas como na foto */
+}
+
+/* Coluna de Informações */
+.modal-info-section {
+  flex: 1.2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
 }
 
-.modal-title {
-  font-size: 1.6rem;
-  margin-bottom: 15px;
-  font-weight: bold;
+.modal-weekday {
+  font-size: 22px;
+  font-weight: 700;
+  color: #666666; /* Cinza na prévia, Azul no sucesso */
+  margin-bottom: 10px;
 }
 
-.modal-content {
+/* Relógio */
+.modal-clock-display {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.modal-hhmm {
+  font-size: 82px; /* Bem grande como no Figma */
+  font-weight: 800;
+  color: #4d4d4d;
+  line-height: 1;
+}
+
+.modal-ss {
+  font-size: 34px;
+  font-weight: 700;
+  color: #666666;
+}
+
+.modal-fulldate {
+  font-size: 22px;
+  font-weight: 700;
+  color: #4d4d4d;
+  margin: 15px 0;
+}
+
+.modal-instruction {
+  font-size: 18px;
+  color: #808080;
+  margin-top: 15px;
+}
+
+/* FOOTER - Botões inferiores */
+.modal-footer {
   display: flex;
   gap: 20px;
-  margin-bottom: 20px;
-  align-items: center;
-  justify-content: center;
 }
 
-.modal-photo {
-  width: 120px;
-  height: 120px;
-  border: 2px solid #ccc;
-  border-radius: 12px;
+/* Botão Registrar (Azul) */
+.btn-confirm {
+  flex: 1;
+  background-color: #3b82f6;
+  color: #ffffff;
+  border: none;
+  padding: 15px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  gap: 10px;
 }
 
-.modal-video {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-.modal-no-photo {
-  font-size: 2.5rem;
-  color: #999;
-}
-
-.modal-info {
-  text-align: left;
-}
-
-.modal-date,
-.modal-time {
-  margin: 4px 0;
-  font-weight: bold;
-}
-
-.modal-question {
-  margin: 15px 0;
-  font-size: 1.1rem;
-}
-
-.modal-buttons {
+/* Botão Tirar Outra (Borda azul) */
+.btn-retry {
+  flex: 1;
+  background-color: #ffffff;
+  color: #3b82f6;
+  border: 1.5px solid #3b82f6;
+  padding: 15px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
   display: flex;
-  gap: 15px;
+  align-items: center;
   justify-content: center;
+  gap: 10px;
 }
 
-.btn-primary {
-  padding: 8px 16px;
-  background-color: #4caf50;
-  color: #fff;
-  border: none;
+/* Botão Fechar (Sucesso - Borda Azul) */
+.btn-close-final {
+  width: 60%;
+  margin: 0 auto;
+  background-color: #ffffff;
+  color: #2a5db0;
+  border: 1.5px solid #2a5db0;
+  padding: 12px;
   border-radius: 8px;
+  font-weight: 700;
   cursor: pointer;
-  font-weight: bold;
 }
 
-.btn-primary:hover {
-  background-color: #45a049;
+/* Ajustes de cor quando entra em estado de SUCESSO */
+.modal-box.success-mode .modal-hhmm,
+.modal-box.success-mode .modal-ss,
+.modal-box.success-mode .modal-weekday,
+.modal-box.success-mode .modal-fulldate {
+  color: #3b82f6; /* Tudo azul no sucesso como na sua 2ª foto */
 }
 
-.btn-secondary {
-  padding: 8px 16px;
-  background-color: #ccc;
-  color: #333;
+.no-photo-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.retry-top {
+  background: transparent;
   border: none;
-  border-radius: 8px;
+  color: #007bff;
+  font-weight: 600;
   cursor: pointer;
+  text-align: center;
+}
+
+.modal-success-big {
+  color: #007bff;
+  font-size: 20px;
   font-weight: bold;
-}
-
-.btn-secondary:hover {
-  background-color: #bbb;
-}
-
-.modal-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 10px;
+  margin-top: 12px;
 }
