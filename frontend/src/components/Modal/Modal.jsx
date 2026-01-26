@@ -6,53 +6,64 @@ function Modal({ isOpen, onClose, foto, registrarPonto, usarFoto }) {
   const [dateInfo, setDateInfo] = useState({ day: "", fullDate: "" });
   const [sucesso, setSucesso] = useState(false);
   const [mensagem, setMensagem] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  // RELÓGIO E DATA EM TEMPO REAL
   useEffect(() => {
     if (!isOpen) return;
 
     const interval = setInterval(() => {
       const now = new Date();
-
-      const hhmm = now.toLocaleTimeString("pt-BR", {
-        hour: "2-digit",
-        minute: "2-digit"
-      });
-
+      const hhmm = now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
       const ss = String(now.getSeconds()).padStart(2, "0");
-
       const weekday = now.toLocaleDateString("pt-BR", { weekday: "long" });
       const formattedDate = now.toLocaleDateString("pt-BR");
 
       setTime({ full: hhmm, seconds: ss });
       setDateInfo({
         day: weekday.charAt(0).toUpperCase() + weekday.slice(1),
-        fullDate: formattedDate
+        fullDate: formattedDate,
       });
     }, 1000);
 
     return () => clearInterval(interval);
   }, [isOpen]);
 
-  // RESET QUANDO ABRE
   useEffect(() => {
     if (isOpen) {
       setSucesso(false);
       setMensagem("");
+      setLoading(false);
     }
   }, [isOpen]);
 
   if (!isOpen) return null;
 
+  // ✅ REGISTRAR PONTO
   const handleRegistrar = async () => {
+    setLoading(true);
+
     const data = await registrarPonto();
 
-    if (data) {
+    // BACKEND OFF
+    if (data?.erro) {
+      setMensagem("❌ Backend offline - ponto NÃO registrado");
       setSucesso(true);
-      setMensagem("Ponto registrado com sucesso.");
-    } else {
-      setMensagem("Erro ao registrar ponto.");
+      setLoading(false);
+      return;
     }
+
+    // DESCONSIDERADO
+    if (!data.valido) {
+      setMensagem("⚠️ Ponto DESCONSIDERADO (menos de 1 minuto)");
+      setSucesso(true);
+      setLoading(false);
+      return;
+    }
+
+    // SUCESSO
+    setMensagem("✅ Ponto registrado com sucesso");
+    setSucesso(true);
+    setLoading(false);
   };
 
   const semFoto = !foto;
@@ -60,14 +71,15 @@ function Modal({ isOpen, onClose, foto, registrarPonto, usarFoto }) {
   return (
     <div className="modal-overlay">
       <div className="modal-box">
-
-        <button className="modal-close-x" onClick={onClose}>×</button>
+        <button className="modal-close-x" onClick={onClose}>
+          &times;
+        </button>
 
         <h2 className="modal-title">
           {sucesso ? "Ponto Registrado!" : "Prévia da Marcação"}
         </h2>
 
-        {/* ===== SEM FOTO ===== */}
+        {/* SEM FOTO */}
         {semFoto ? (
           <div className="modal-body no-photo-layout">
             <p className="modal-weekday">{dateInfo.day}</p>
@@ -82,7 +94,7 @@ function Modal({ isOpen, onClose, foto, registrarPonto, usarFoto }) {
             {sucesso && <p className="modal-success-big">{mensagem}</p>}
           </div>
         ) : (
-          /* ===== COM FOTO ===== */
+          // COM FOTO
           <div className="modal-body">
             <div className="modal-photo-section">
               <img src={foto} alt="Captura" className="modal-img-preview" />
@@ -105,17 +117,16 @@ function Modal({ isOpen, onClose, foto, registrarPonto, usarFoto }) {
           </div>
         )}
 
-        {/* ===== BOTÕES ===== */}
+        {/* FOOTER */}
         <div className="modal-footer">
           {!sucesso ? (
             <>
-              {/* 🔥 REGRA FINAL AQUI */}
               <button className="btn-retry" onClick={onClose}>
-                {usarFoto ? "🔄 Tirar outra foto" : "🔄 Tentar novamente"}
+                {usarFoto ? "📸 Tirar outra foto" : "🔄 Tentar novamente"}
               </button>
 
-              <button className="btn-confirm" onClick={handleRegistrar}>
-                ✓ Registrar Ponto
+              <button className="btn-confirm" onClick={handleRegistrar} disabled={loading}>
+                {loading ? "Registrando..." : "✓ Registrar Ponto"}
               </button>
             </>
           ) : (
@@ -124,7 +135,6 @@ function Modal({ isOpen, onClose, foto, registrarPonto, usarFoto }) {
             </button>
           )}
         </div>
-
       </div>
     </div>
   );

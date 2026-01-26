@@ -1,10 +1,10 @@
 package com.ponto.controller;
 
-import org.springframework.web.bind.annotation.*;
-import com.ponto.model.Ponto;
 import com.ponto.service.PontoService;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
@@ -17,13 +17,16 @@ public class PontoController {
         this.service = service;
     }
 
+    // Registrar ponto COM ou SEM foto
     @PostMapping
-    public Ponto registrar(@RequestParam(required = false) String fotoPath) {
-        return service.registrarPonto(fotoPath);
+    public Map<String, Object> registrar(
+            @RequestParam(required = false) MultipartFile foto
+    ) {
+        return service.registrarPonto(foto);
     }
 
     @GetMapping
-    public Iterable<Ponto> listar() {
+    public Iterable<?> listar() {
         return service.listarTodos();
     }
 }
