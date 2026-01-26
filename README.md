@@ -1,7 +1,6 @@
 ⏱️ Projeto Matheus – Sistema de Registro de Ponto
 Sistema web para registro de ponto com captura opcional de foto, desenvolvido em React (Frontend) e Java Spring Boot (Backend).
 
-
 🎤 1️⃣ Explicação Geral
 “Desenvolvi um sistema de registro de ponto com React no frontend e Spring Boot no backend.
 O sistema captura data, hora e opcionalmente foto, com validações de negócio no backend e feedback visual no frontend.”
@@ -55,7 +54,6 @@ npm run dev
 ✅ Acessar no navegador
 http://localhost:5173
 
-
 ☕ BACKEND (Spring Boot)
 📌 Entrar na pasta
 cd backend
@@ -79,12 +77,20 @@ POST http://localhost:8080/pontos
 Enviar foto (opcional):
 Content-Type: multipart/form-data
 
-
 Campo	Tipo	Descrição
 foto	file	Foto capturada pela câmera
 
 ✅ Listar pontos
 GET http://localhost:8080/pontos
+
+# 📌 Como rodar o projeto localmente
+
+# ▶️ Passo 1: Clonar o repositório
+```bash
+git clone https://github.com/matheus77/DesafioDixi2026.git
+
+# Acesse a pasta
+cd DesafioDixi2026
 
 -------------------------------------------
 ✅ Observação:
@@ -92,9 +98,4 @@ GET http://localhost:8080/pontos
 O projeto segue arquitetura separada de frontend e backend, com validações de negócio no backend e controle de fluxo no frontend.
 A persistência completa e histórico detalhado ficaram planejados para uma próxima etapa.
 
-O frontend roda em http://localhost:5173 e consome a API Java rodando em http://localhost:8080/pontos
-
-
-
-
-
+O frontend roda em http://localhost:5173 e consome a API Java rodando em http://localhost:8080/pontos.
