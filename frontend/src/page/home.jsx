@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import "./Home.css";
-import Modal from "../../components/Modal/Modal";
+import "./home.css";
+import Modal from "../components/Modal/Modal";
 
 export default function Home() {
   const [time, setTime] = useState("");

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Sidebar from "./components/Sidebar/Sidebar";
-import Home from "./pages/home/home";
-import Historico from "./pages/historico/historico";
+import Home from "./page/home.jsx";
 import "./App.css";
 
 function App() {
@@ -11,7 +10,6 @@ function App() {
     <div className="app">
       <Sidebar onChangePage={setPage} />
       {page === "home" && <Home />}
-      {page === "historico" && <Historico />}
     </div>
   );
 }
